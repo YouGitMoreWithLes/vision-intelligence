@@ -10,12 +10,12 @@ variable "subscriptionId" {
 
 variable "project_name" {
   type    = string
-  default = "ivi"
+  default = "vi"
 }
 
 variable "env" {
   type    = string
-  default = "dev1"
+  default = "dev"
 }
 
 variable "should_create_rg" {
