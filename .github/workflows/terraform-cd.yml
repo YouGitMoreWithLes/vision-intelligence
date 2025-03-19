@@ -1,15 +1,9 @@
-name: Terraform CD
-# on:
-#   push: 
-#     branches:
-#       - main
-#     paths:
-#       - 'src/InfrastructureAsCode/**'
+name: Terraform-CD
 
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Terraform CI"]
+    workflows: ["Terraform-CI"]
     types:
       - completed
 
@@ -18,7 +12,7 @@ permissions: read-all
 jobs:
   terraform:
     name: "Terraform build/deploy"
-    # needs: "Terraform CI"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     runs-on: ubuntu-latest
     permissions:
@@ -43,7 +37,12 @@ jobs:
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           allow-no-subscriptions: true
-          enable-AzPSSession: true
+          enable-AzPSSession: false
+          enable-AzCli: false
+          enable-AzModule: false
+          enable-ExternalModule: false
+          enable-EnvironmentVariable: false
+          enable-ManagedIdentity: false
           environment: 'AzureCloud'
 
       - name: Setup Terraform

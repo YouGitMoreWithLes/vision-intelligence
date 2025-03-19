@@ -1,4 +1,4 @@
-name: Dotnet CI
+name: Dotnet-CI
 on:
   pull_request:
     branches:
@@ -31,8 +31,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Echo project paths
         run: |
