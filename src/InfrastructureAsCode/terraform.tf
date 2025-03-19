@@ -18,6 +18,6 @@ terraform {
     resource_group_name  = "tf-state-rg"
     storage_account_name = "satfstateexample"
     container_name       = "ivi-tfstate"
-    key                  = "local.terraform.tfstate"
+    key                  = "dev.terraform.tfstate"
   }
 }

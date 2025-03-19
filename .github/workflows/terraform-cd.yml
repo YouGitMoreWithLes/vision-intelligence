@@ -1,10 +1,19 @@
 name: Terraform CD
+# on:
+#   push: 
+#     branches:
+#       - main
+#     paths:
+#       - 'src/InfrastructureAsCode/**'
+
 on:
-  push: 
-    branches:
-      - main
-    paths:
-      - 'src/InfrastructureAsCode/**'
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Terraform CI"]
+    types:
+      - completed
+
+permissions: read-all
 
 jobs:
   terraform:
@@ -27,28 +36,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # - name: Azure login
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ secrets.ARM_CLIENT_ID }}
-      #     subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
-      #     tenant-id: ${{ secrets.ARM_TENANT_ID }}
-      #     allow-no-subscriptions: true
-      #     enable-AzPSSession: true
-      #     environment: 'AzureCloud'
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+          environment: 'AzureCloud'
 
-      # - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v3
-      #   # with:
-      #   #   terraform_version: 1.10.4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        # with:
+        #   terraform_version: 1.10.4
 
-      # - name: Terrformm init
-      #   run: terraform init -no-color
+      - name: Terrformm init
+        run: terraform init -no-color
 
-      # - name: Terrform plan
-      #   id: plan
-      #   run: terraform plan -no-color
+      - name: Terrform plan
+        id: plan
+        run: terraform plan -no-color
 
-      # - name: Terrform apply
-      #   id: apply
-      #   run: terraform apply --auto-approve -no-color
+      - name: Terrform apply
+        id: apply
+        run: terraform apply --auto-approve -no-color
