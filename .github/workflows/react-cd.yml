@@ -1,0 +1,57 @@
+name: React CD
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "The environment to deploy to"
+      artifact-name:
+        required: false
+        type: string
+        default: "published-web-app"
+        description: "The name of the published artifact to be deployed"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+    env:
+      AZURE_WEBAPP_NAME: "ghaldevswasa"
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: './downloads'
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+          environment: 'AzureCloud'
+
+      - name: Delete existing files in Azure Storage Account
+        run: |
+          az storage blob delete-batch \
+            --account-name ${{ env.AZURE_WEBAPP_NAME }} \
+            --source '$web' \
+            --pattern '*' \
+            --delete-snapshots include
+
+      - name: Upload to Azure Storage Account
+        run: |
+          az storage blob upload-batch \
+            --account-name ${{ env.AZURE_WEBAPP_NAME }} \
+            --destination '$web' \
+            --source ./downloads \
+            --overwrite

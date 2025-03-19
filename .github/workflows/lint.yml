@@ -1,0 +1,35 @@
+name: Linter
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+      - feature/*
+      - hotfix/*
+  push: 
+    branches:
+      - main
+      - development
+
+jobs:
+  lint:
+    name: Lint all repository code
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Run super-linter
+        uses: github/super-linter@v7
+        env:
+          DEFAULT_BRANCH: ${{ inputs.branch }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_CHECKOV: false
+          VALIDATE_JSCPD: false
+          DISABLE: JSCPD CHECKOV
+          FIX_JAVASCRIPT_PRETTIER: true
+          FIX_YAML_PRETTIER: true
+          FIX_TERRAFORM_FMT: true

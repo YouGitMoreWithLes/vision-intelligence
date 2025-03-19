@@ -1,0 +1,53 @@
+name: React CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/GitHubActionsWeb/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/GitHubActionsWeb/**'
+
+jobs:
+  react-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'src/GitHubActionsWeb/'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the React app
+        run: npm run build
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: published-web-app
+          path: src/GitHubActionsWeb/dist
+
+  azure-deploy:
+    name: Azure deploy workflow
+    needs: react-build
+    uses: ./.github/workflows/react-cd.yml
+    with:
+      environment: "dev" # ${{ matrix.environment }}
+      artifact-name: "published-web-app"
+    secrets: inherit
+    permissions:
+      id-token: write

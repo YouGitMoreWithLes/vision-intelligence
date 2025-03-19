@@ -1,0 +1,64 @@
+name: Dotnet CD
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "The environment to deploy to"
+      artifact-name:
+        required: false
+        type: string
+        default: "dotnet-build-artifact"
+        description: "The name of the published artifact to be deployed"
+
+jobs:
+  build-dotnet:
+    name: Azure deployment
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+    env:
+      AZURE_WEBAPP_NAME: "ghal-dev-wa"
+
+    steps:
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dotnet-build-artifact
+          path: './downloads'
+
+      - name: Dir downloads
+        run: ls -lah ./downloads
+
+      - name: Unzip build archive
+        run: unzip ./downloads/*.zip -d ./extracted
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+          environment: 'AzureCloud'
+
+      - name: Get web app publish profile
+        run: |
+          echo "PUBLISH_PROFILE=$(az webapp deployment list-publishing-profiles -g 'ghal-${{ inputs.environment }}-rg' -n 'ghal-${{ inputs.environment }}-wa' --xml)" >> $GITHUB_OUTPUT
+        id: getPublishProfile
+
+      - name: 'Run Azure webapp deploy action using publish profile credentials'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ steps.getPublishProfile.outputs.PUBLISH_PROFILE }}
+          package: './extracted'

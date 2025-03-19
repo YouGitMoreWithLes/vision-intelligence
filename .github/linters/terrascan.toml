@@ -1,0 +1,3 @@
+# terrascan configuration file https://github.com/accurics/terrascan/blob/master/config/terrascan.toml
+[rules]
+    skip-rules = ["accurics.azure.NS.272"]

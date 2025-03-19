@@ -1,0 +1,93 @@
+name: Dotnet CI
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+      - feature/*
+      - hotfix/*
+    paths:
+      - 'src/InfrastructureAsCode/**'
+  push: 
+    branches:
+      - main
+      - development
+    paths:
+      - 'src/InfrastructureAsCode/**'
+
+jobs:
+  build-dotnet:
+    name: Build dotnet
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/VisionIntelligenceWebApi
+    env:
+      PROJECT_ROOT_PATH: "${{ github.workspace }}/VisionIntelligenceWebApi"
+      PROJECT_FULL_PATH: "${{ github.workspace }}/VisionIntelligenceWebApi/VisionIntelligenceWebApi.csproj"
+      TEST_FULL_PATH: "${{ github.workspace }}/VisionIntelligenceWebApiTest/VisionIntelligenceWebApiTest.csproj"
+      DOTNET_VERSION: "8.0"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Echo project paths
+        run: |
+          echo "PROJECT_ROOT_PATH="${{ env.PROJECT_ROOT_PATH }}
+          echo "PROJECT_FULL_PATH="${{ env.PROJECT_FULL_PATH }}
+
+      - name: Setup dotnet ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          source-url: https://nuget.pkg.github.com/lmcwhirt-insight/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install GitVersion
+        uses: GitTools/actions/gitversion/setup@v0
+        with:
+          versionSpec: "5.x"
+          preferLatestVersion: true
+
+      - name: Determine version
+        id: gitversion
+        uses: GitTools/actions/gitversion/execute@v0
+
+      - name: Dotnet restore
+        run: dotnet restore
+
+      - name: Dotnet build
+        run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
+
+      - name: Dotnet test
+        run: dotnet test --logger "trx;LogFileName=${{ env.PROJECT_ROOT_PATH }}/TestResults/test-results.trx" "${{ env.TEST_FULL_PATH}}"
+
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-artifact
+          path: '${{ env.PROJECT_ROOT_PATH }}/TestResults'
+        if: ${{ always() }}
+
+      # - name: Dotnet publish
+      #   run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+
+      # - name: Set archive file name environment variable
+      #   run: |
+      #     echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+      #     echo "ARCHIVE_FILE_NAME="$ARCHIVE_FILE_NAME
+
+      # - name: Zip archive file
+      #   run: |
+      #     cd ${{ env.PROJECT_ROOT_PATH }}/api-publish
+      #     zip -v $ARCHIVE_FILE_NAME.zip ./*
+
+      # - name: Upload build artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dotnet-build-artifact
+      #     path: '${{ env.PROJECT_ROOT_PATH }}/api-publish/*.zip'
