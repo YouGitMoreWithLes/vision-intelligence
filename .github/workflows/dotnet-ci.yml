@@ -1,5 +1,6 @@
 name: Dotnet-CI
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
