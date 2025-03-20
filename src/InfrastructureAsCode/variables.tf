@@ -43,6 +43,7 @@ variable "vnet_subnets" {
         Delegate = string
         Actions  = optional(list(string))
       })))
+      ServiceEndpoints = optional(list(string))
     }))
   default = [ # CAUTION! Altering the order of this list will afftect hardcoded values in resource files.
     { Name = "app-gateway" },
@@ -52,7 +53,7 @@ variable "vnet_subnets" {
     { Name = "data-warehouse" },
     { Name = "event-hub" },
     { Name = "nat-gateway" },
-    { Name = "storage" },
+    { Name = "storage", ServiceEndpoints = [ "Microsoft.Storage" ] },
   ]
 }
 
