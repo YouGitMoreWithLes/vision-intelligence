@@ -8,4 +8,3 @@
 #   can_admins_bypass   = true
 #   prevent_self_review = false
 # }
-

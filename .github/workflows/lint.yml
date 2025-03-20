@@ -25,7 +25,7 @@ jobs:
       - name: Run super-linter
         uses: github/super-linter@v7
         env:
-          DEFAULT_BRANCH: ${{ inputs.branch }}
+          DEFAULT_BRANCH: 'main'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_CHECKOV: false

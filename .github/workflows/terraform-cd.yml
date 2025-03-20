@@ -38,11 +38,6 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: false
-          enable-AzCli: false
-          enable-AzModule: false
-          enable-ExternalModule: false
-          enable-EnvironmentVariable: false
-          enable-ManagedIdentity: false
           environment: 'AzureCloud'
 
       - name: Setup Terraform
