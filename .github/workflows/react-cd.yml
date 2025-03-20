@@ -3,11 +3,6 @@ name: React CD
 on:
   workflow_call:
     inputs:
-      environment:
-        required: true
-        type: string
-        default: "dev"
-        description: "The environment to deploy to"
       artifact-name:
         required: false
         type: string

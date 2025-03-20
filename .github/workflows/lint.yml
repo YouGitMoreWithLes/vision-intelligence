@@ -31,7 +31,7 @@ jobs:
           VALIDATE_CHECKOV: false
           VALIDATE_JSCPD: false
           DISABLE: JSCPD CHECKOV
-          DOTNET_SLN_FORMAT_ANALYZERS: false
+          VALIDATE_DOTNET_SLN_FORMAT_ANALYZERS: false
           FIX_JAVASCRIPT_PRETTIER: true
           FIX_YAML_PRETTIER: true
           FIX_TERRAFORM_FMT: true
