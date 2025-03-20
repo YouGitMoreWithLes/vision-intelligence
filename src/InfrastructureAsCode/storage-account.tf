@@ -41,6 +41,8 @@ resource "azurerm_storage_account" "content-sa" {
 # }
 
 resource "azurerm_storage_account" "datalake-sa" {
+  depends_on = [ azurerm_virtual_network.vnet ]
+  
   name                     = format("%s%s%s", local.short-name, "datalake","sa")
   resource_group_name      = data.azurerm_resource_group.rg.name
   location                 = data.azurerm_resource_group.rg.location
