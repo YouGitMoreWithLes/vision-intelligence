@@ -11,7 +11,7 @@ Check out the [Azure CLI Installation documenttion](https://learn.microsoft.com/
 Log into the tenant/subscription using the Azure CLI.
 
 ```bash
-az login --tenant 00000000-0000-0000-0000-000000000000 
+az login --tenant 00000000-0000-0000-0000-000000000000
 
 az account set -s 00000000-0000-0000-0000-000000000000
 ```
@@ -73,9 +73,9 @@ This IaC can use an existing Azure Resource Group to deploy the resources or it 
 
 ### Azure Container Instance Special Case
 
-This IaC creates both an Azure Container Registry and a Azure Container Instance. However, since the Azure Container Instance is configured to point to the VisionIntelligenceAPI container the deployment of this IaC will fail initially. 
+This IaC creates both an Azure Container Registry and a Azure Container Instance. However, since the Azure Container Instance is configured to point to the VisionIntelligenceAPI container the deployment of this IaC will fail initially.
 
-To prevent this initial failure configure the "should_deploy_container_resources" variable flag in the [variables.tf](./variables.tf) file to false the first time this IaC is deployed. 
+To prevent this initial failure configure the "should_deploy_container_resources" variable flag in the [variables.tf](./variables.tf) file to false the first time this IaC is deployed.
 
 This will prevent both the Azure Container Instance and the Azure Application Gateway from being depoyed. Once the Azure Container Registry has been deployed and the VisionIntelligenceAPI has been built and pushed to the Azure Container Registry yo cn reconfigure the "should_deploy_container_resources" variable to true and allow the web API resources to be deployed as well.
 
@@ -83,7 +83,7 @@ This will prevent both the Azure Container Instance and the Azure Application Ga
 
 Azure/Terraform doesn't always clean up all related/child resources when deleting items. For example Diagnostic Settings are not automatically deleted. Be sure to clean up your resources appropriately.
 
-```bash 
+```bash
 # NOTE: These are examples and the specific subscriptionId, resource group name, and resource name need to be applied.
 
 az keyvault key delete --vault-name vi-dev-kv -n acr-server
@@ -98,4 +98,3 @@ az keyvault key purge --vault-name vi-dev-kv -n acr-password
 az resource delete --ids "/subscriptions/{00000000-0000-0000-0000-000000000000}/resourceGroups/ivi-dev1-rg/providers/Microsoft.KeyVault/vaults/vi-dev-kv|vi-dev-kv-ds"
 az resource delete --ids "/subscriptions/{00000000-0000-0000-0000-000000000000}/resourceGroups/ivi-dev1-rg/providers/Microsoft.Network/virtualNetworks/ivi-dev1-vnet|ivi-dev1-vnet-ds"
 ```
-
