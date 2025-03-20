@@ -1,4 +1,4 @@
-resource "azurrm_key_vault_key" "content-key"{
+resource "azurerm_key_vault_key" "content-key"{
   name = format("%s-%s", local.base-name, "content-key")
   key_vault_id = azurerm_key_vault.key-vault.id
   key_type = "RSA"
@@ -27,10 +27,10 @@ resource "azurerm_storage_account_customer_managed_key" "content-sa-cmk" {
 resource "azuread_role_assignment" "content-sa-role" {
   principal_id = azurerm_storage_account.content-sa.identity[0].principal_id
   role_definition_name = "Key Vault Crypto User"
-  scope = azurrm_key_vault_key.content-key.id
+  scope = azurerm_key_vault_key.content-key.id
 }
 
-resource "azurrm_key_vault_key" "datalake-key"{
+resource "azurerm_key_vault_key" "datalake-key"{
   name = format("%s-%s", local.base-name, "datalake-key")
   key_vault_id = azurerm_key_vault.key-vault.id
   key_type = "RSA"
@@ -65,5 +65,5 @@ resource "azurerm_storage_account_customer_managed_key" "datalake-sa-cmk" {
 resource "azuread_role_assignment" "datalake-sa-role" {
   principal_id = azurerm_storage_account.datalake-sa.identity[0].principal_id
   role_definition_name = "Key Vault Crypto User"
-  scope = azurrm_key_vault_key.datalake-key.id
+  scope = azurerm_key_vault_key.datalake-key.id
 }
