@@ -1,6 +1,5 @@
-name: Dotnet-CI
+name: Dotnet CI
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - main
@@ -32,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Echo project paths
         run: |
@@ -63,6 +64,7 @@ jobs:
         run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
 
       - name: Dotnet test
+        if: ${{ inputs.test-project-path != null }}
         run: dotnet test --logger "trx;LogFileName=${{ env.PROJECT_ROOT_PATH }}/TestResults/test-results.trx" "${{ env.TEST_FULL_PATH}}"
 
       - name: Upload dotnet test results
@@ -70,23 +72,23 @@ jobs:
         with:
           name: dotnet-test-artifact
           path: '${{ env.PROJECT_ROOT_PATH }}/TestResults'
-        if: ${{ always() }}
+        if: ${{ inputs.test-project-path != null && always() }}
 
-      # - name: Dotnet publish
-      #   run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+      - name: Dotnet publish
+        run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
-      # - name: Set archive file name environment variable
-      #   run: |
-      #     echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
-      #     echo "ARCHIVE_FILE_NAME="$ARCHIVE_FILE_NAME
+      - name: Set archive file name environment variable
+        run: |
+          echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+          echo "ARCHIVE_FILE_NAME="$ARCHIVE_FILE_NAME
 
-      # - name: Zip archive file
-      #   run: |
-      #     cd ${{ env.PROJECT_ROOT_PATH }}/api-publish
-      #     zip -v $ARCHIVE_FILE_NAME.zip ./*
+      - name: Zip archive file
+        run: |
+          cd ${{ env.PROJECT_ROOT_PATH }}/api-publish
+          zip -v $ARCHIVE_FILE_NAME.zip ./*
 
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: dotnet-build-artifact
-      #     path: '${{ env.PROJECT_ROOT_PATH }}/api-publish/*.zip'
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-build-artifact
+          path: '${{ env.PROJECT_ROOT_PATH }}/api-publish/*.zip'

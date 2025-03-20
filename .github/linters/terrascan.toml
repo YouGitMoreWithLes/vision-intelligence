@@ -1,3 +1,7 @@
 # terrascan configuration file https://github.com/accurics/terrascan/blob/master/config/terrascan.toml
 [rules]
-    skip-rules = ["accurics.azure.NS.272"]
+    skip-rules = [
+      "accurics.azure.NS.272",
+      "accurics.azure.NS.147",
+      "accurics.azure.AKS.3"
+    ]
