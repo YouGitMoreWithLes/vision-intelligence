@@ -46,7 +46,6 @@ jobs:
     needs: react-build
     uses: ./.github/workflows/react-cd.yml
     with:
-      environment: "dev" # ${{ matrix.environment }}
       artifact-name: "published-web-app"
     secrets: inherit
     permissions:
