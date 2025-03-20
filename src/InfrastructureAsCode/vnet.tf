@@ -47,7 +47,7 @@ resource "azurerm_network_security_group" "subnet_nsg" {
   location = azurerm_resource_group.deployment-rg[0].location
 }
 
-resource "azurerm_subnet_network_security_group_association" "example" {
+resource "azurerm_subnet_network_security_group_association" "sn_sg" {
   count = length(var.vnet_subnets)
 
   subnet_id                 = azurerm_subnet.subnet[count.index].id

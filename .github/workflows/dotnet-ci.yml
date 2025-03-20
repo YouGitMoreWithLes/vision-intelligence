@@ -1,4 +1,4 @@
-name: Dotnet CI
+name: Dotnet-CI
 on:
   pull_request:
     branches:
@@ -7,13 +7,15 @@ on:
       - feature/*
       - hotfix/*
     paths:
-      - 'src/InfrastructureAsCode/**'
+      - 'src/VisionintelligenceWebAPI/**'
+      - 'src/VisionIntelligenceWebApiTest/**'
   push: 
     branches:
       - main
       - development
     paths:
-      - 'src/InfrastructureAsCode/**'
+      - 'src/VisionintelligenceWebAPI/**'
+      - 'src/VisionIntelligenceWebApiTest/**'
 
 jobs:
   build-dotnet:
@@ -72,22 +74,3 @@ jobs:
           name: dotnet-test-artifact
           path: '${{ env.PROJECT_ROOT_PATH }}/TestResults'
         if: ${{ always() }}
-
-      - name: Dotnet publish
-        run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
-
-      - name: Set archive file name environment variable
-        run: |
-          echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
-          echo "ARCHIVE_FILE_NAME="$ARCHIVE_FILE_NAME
-
-      - name: Zip archive file
-        run: |
-          cd ${{ env.PROJECT_ROOT_PATH }}/api-publish
-          zip -v $ARCHIVE_FILE_NAME.zip ./*
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dotnet-build-artifact
-          path: '${{ env.PROJECT_ROOT_PATH }}/api-publish/*.zip'
