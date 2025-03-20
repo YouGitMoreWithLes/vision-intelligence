@@ -34,7 +34,7 @@ Output should look something like this:
       "managementEndpointUrl": "https://management.core.windows.net/"
     }
 
-### Create the required GitHug Actions Secrets to support the GHA Workflows
+### Create the required GitHub Actions Secrets to support the GHA Workflows
 
 Check out the [Create GitHub Action Secrets documentation](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions)
 
@@ -62,11 +62,11 @@ You will need an existing Azure Storage Account with a container already created
 
 ### Azure Resource Group Management
 
-This IaC can use an existing Azure Resource Group to deploy the resources or it can create a new one if desired. Configure the "should_create_rg" variable to false if you have an existing resource group you are deploying to, otherwise configure the variable to true and this IaC will create a new Azure Resource Group. 
+This IaC can use an existing Azure Resource Group to deploy the resources or it can create a new one if desired. Configure the "should_create_rg" variable in the [variables.tf](./variables.tf) file to false if you have an existing resource group you are deploying to, otherwise configure the variable to true and this IaC will create a new Azure Resource Group. 
 
 ### Azure Container Instance Special Case
 
-This IaC creates both an Azure Container Registry and a Azure Container Instance. However, since the Azure Container Instance is configured to point to the VisionIntelligenceAPI container the deployment of this IaC will fail initially. To prevent this initial failure configure the "should_deploy_container_resources" variable flag to false the first time this IaC is deployed. This will prevent both the Azure Container Instance and the Azure Application Gateway from being depoyed. Once the Azure Container Registry has been deployed and the VisionIntelligenceAPI has been built and pushed to the Azure Container Registry yo cn reconfigure the "should_deploy_container_resources" variable to true and allow the web api resources to be deployed as well.
+This IaC creates both an Azure Container Registry and a Azure Container Instance. However, since the Azure Container Instance is configured to point to the VisionIntelligenceAPI container the deployment of this IaC will fail initially. To prevent this initial failure configure the "should_deploy_container_resources" variable flag in the [variables.tf](./variables.tf) file to false the first time this IaC is deployed. This will prevent both the Azure Container Instance and the Azure Application Gateway from being depoyed. Once the Azure Container Registry has been deployed and the VisionIntelligenceAPI has been built and pushed to the Azure Container Registry yo cn reconfigure the "should_deploy_container_resources" variable to true and allow the web api resources to be deployed as well.
 
 ### Cleaning Up Previous Installations
 
