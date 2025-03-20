@@ -64,7 +64,6 @@ jobs:
         run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
 
       - name: Dotnet test
-        if: ${{ inputs.test-project-path != null }}
         run: dotnet test --logger "trx;LogFileName=${{ env.PROJECT_ROOT_PATH }}/TestResults/test-results.trx" "${{ env.TEST_FULL_PATH}}"
 
       - name: Upload dotnet test results
@@ -72,7 +71,7 @@ jobs:
         with:
           name: dotnet-test-artifact
           path: '${{ env.PROJECT_ROOT_PATH }}/TestResults'
-        if: ${{ inputs.test-project-path != null && always() }}
+        if: ${{ always() }}
 
       - name: Dotnet publish
         run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'

@@ -69,9 +69,9 @@ resource "azurerm_network_security_rule" "http" {
   network_security_group_name = azurerm_network_security_group.subnet_nsg[0].name
 }
 
-resource "azurerm_network_security_rule" "agwm" {
-  name                       = "AllowHTTP"
-  priority                   = 100
+resource "azurerm_network_security_rule" "agw_mngmnt" {
+  name                       = "AllowAgwManagement"
+  priority                   = 4096
   direction                  = "Inbound"
   access                     = "Allow"
   protocol                   = "Tcp"
