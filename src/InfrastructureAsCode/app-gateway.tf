@@ -2,8 +2,8 @@ resource "azurerm_public_ip" "app-gateway-pip" {
   count              = var.should_deploy_container_resources == true ? 1 : 0
  
   name                = format("%s-%s", local.base-name, "app-gateway-pip")
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   
   allocation_method   = "Static"
 }
@@ -15,8 +15,8 @@ resource "azurerm_application_gateway" "app-gateway" {
   depends_on = [ azurerm_public_ip.app-gateway-pip[0] ]
   
   name                = format("%s-%s", local.base-name, "app-gateway")
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
 
   sku {
     name     = "Standard_v2"

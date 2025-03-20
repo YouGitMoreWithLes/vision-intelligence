@@ -1,7 +1,7 @@
 resource "azurerm_key_vault" "key-vault" {
   name                        = format("%s-%s", local.base-name, "kv")
-  resource_group_name         = azurerm_resource_group.deployment-rg[0].name
-  location                    = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name         = data.azurerm_resource_group.rg.name
+  location                    = data.azurerm_resource_group.rg.location
   tenant_id                   = var.tenantId
 
   enable_rbac_authorization = true
@@ -16,8 +16,8 @@ resource "azurerm_key_vault" "key-vault" {
 
 resource "azurerm_log_analytics_workspace" "kv-law" {
   name                = format("%s-%s-law", local.base-name, "kv")
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   sku                 = "PerGB2018"
   retention_in_days   = 30
 }

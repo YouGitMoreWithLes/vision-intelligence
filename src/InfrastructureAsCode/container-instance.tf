@@ -2,8 +2,8 @@ resource "azurerm_container_group" "vision_intelligence_cg" {
   count              = var.should_deploy_container_resources == true ? 1 : 0
 
   name                = format("%s-%s", local.base-name, "cg")
-  location            = azurerm_resource_group.deployment-rg[0].location
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   os_type             = "Linux"
 
   ip_address_type = "Private"

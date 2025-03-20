@@ -1,8 +1,8 @@
 resource "azurerm_storage_account" "vnet-fl" {
   name = format("%s%s%s", local.short-name, "fl", "sa")
 
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
 
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -10,8 +10,8 @@ resource "azurerm_storage_account" "vnet-fl" {
 
 resource "azurerm_virtual_network" "vnet" {
   name                = format("%s-%s", local.base-name, "vnet")
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   address_space       = ["${var.vnet_base_ip}.0.0/16"]
 
 }
@@ -21,7 +21,7 @@ resource "azurerm_subnet" "subnet" {
   count = length(var.vnet_subnets)
   name  = format("%s-%s-%s", local.base-name, "subnet", var.vnet_subnets[count.index].Name)
 
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   virtual_network_name = azurerm_virtual_network.vnet.name
 
@@ -38,50 +38,6 @@ resource "azurerm_subnet" "subnet" {
       }
     }
   }
-}
-
-resource "azurerm_network_security_group" "subnet_nsg" {
-  count = length(var.vnet_subnets)
-  name  = format("%s-%s-%s-nsg", local.base-name, "subnet", var.vnet_subnets[count.index].Name)
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location = azurerm_resource_group.deployment-rg[0].location
-}
-
-resource "azurerm_subnet_network_security_group_association" "sn_sg" {
-  count = length(var.vnet_subnets)
-
-  subnet_id                 = azurerm_subnet.subnet[count.index].id
-  network_security_group_id = azurerm_network_security_group.subnet_nsg[count.index].id
-}
-
-resource "azurerm_network_security_rule" "http" {
-  name                       = "AllowHTTP"
-  priority                   = 100
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  destination_port_range     = "80"
-  source_address_prefix      = "*"
-  destination_address_prefix = "*"
-
-  resource_group_name         =  azurerm_resource_group.deployment-rg[0].name
-  network_security_group_name = azurerm_network_security_group.subnet_nsg[0].name
-}
-
-resource "azurerm_network_security_rule" "agw_mngmnt" {
-  name                       = "AllowAgwManagement"
-  priority                   = 4096
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  destination_port_range     = "65200-65535"
-  source_address_prefix      = "*"
-  destination_address_prefix = "*"
-
-  resource_group_name         =  azurerm_resource_group.deployment-rg[0].name
-  network_security_group_name = azurerm_network_security_group.subnet_nsg[0].name
 }
 
 resource "azurerm_monitor_diagnostic_setting" "vnet_diagnostics" {
@@ -104,16 +60,16 @@ resource "azurerm_monitor_diagnostic_setting" "vnet_diagnostics" {
 }
 
 resource "azurerm_network_watcher" "nw" {
-  name                = "network-watcher-${azurerm_resource_group.deployment-rg[0].location}"
-  location            = azurerm_resource_group.deployment-rg[0].location
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
+  name                = "network-watcher-${data.azurerm_resource_group.rg.location}"
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_watcher_flow_log" "flow_log" {
   name = "${azurerm_storage_account.vnet-fl.name}-flow-log"
 
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
 
   network_watcher_name = azurerm_network_watcher.nw.name
   target_resource_id   = azurerm_virtual_network.vnet.id
@@ -125,3 +81,4 @@ resource "azurerm_network_watcher_flow_log" "flow_log" {
     days    = 30
   }
 }
+

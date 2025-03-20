@@ -13,8 +13,8 @@ resource "azurerm_container_registry" "acr" {
   depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
 
   name                = format("%s%s", local.short-name, "acr")
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  location            = azurerm_resource_group.deployment-rg[0].location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   sku                 = "Standard"
   admin_enabled       = true
 

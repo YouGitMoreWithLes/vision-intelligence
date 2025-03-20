@@ -1,7 +1,7 @@
 # resource "azurerm_storage_account" "static_website" {
 #   name                     = format("%s%s", local.short-name, "swasa")
-#   resource_group_name      = azurerm_resource_group.deployment-rg[0].name
-#   location                 = azurerm_resource_group.deployment-rg[0].location
+#   resource_group_name      = data.azurerm_resource_group.rg.name
+#   location                 = data.azurerm_resource_group.rg.location
 #   account_tier             = "Standard"
 #   account_replication_type = "LRS"
 
@@ -13,7 +13,7 @@
 
 # resource "azurerm_cdn_frontdoor_profile" "afd_profile" {
 #   name                      = format("%s%s", local.short-name, "cdnprofile")
-#   resource_group_name         = azurerm_resource_group.deployment-rg[0].name
+#   resource_group_name         = data.azurerm_resource_group.rg.name
 #   sku_name                    = "Standard_AzureFrontDoor"
 # }
 
