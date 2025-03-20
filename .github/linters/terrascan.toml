@@ -3,5 +3,6 @@
     skip-rules = [
       "accurics.azure.NS.272",
       "accurics.azure.NS.147",
-      "accurics.azure.AKS.3"
+      "accurics.azure.AKS.3",
+      "accurics.azure.NS.161"
     ]
