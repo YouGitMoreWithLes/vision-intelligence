@@ -24,11 +24,11 @@ resource "azurerm_storage_account_customer_managed_key" "content-sa-cmk" {
   key_name           = azurerm_key_vault_key.content-key.name
 }
 
-resource "azuread_role_assignment" "content-sa-role" {
-  principal_id = azurerm_storage_account.content-sa.identity[0].principal_id
-  role_definition_name = "Key Vault Crypto User"
-  scope = azurerm_key_vault.key-vault.id
-}
+# resource "azuread_role_assignment" "content-sa-role" {
+#   principal_id = azurerm_storage_account.content-sa.identity[0].principal_id
+#   role_definition_name = "Key Vault Crypto User"
+#   scope = azurerm_key_vault.key-vault.id
+# }
 
 resource "azurerm_key_vault_key" "datalake-key"{
   name = format("%s-%s", local.base-name, "datalake-key")
@@ -44,6 +44,10 @@ resource "azurerm_storage_account" "datalake-sa" {
   location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   # Networking and access control
   public_network_access_enabled = false
@@ -62,8 +66,8 @@ resource "azurerm_storage_account_customer_managed_key" "datalake-sa-cmk" {
   key_name           = azurerm_key_vault_key.datalake-key.name
 }
 
-resource "azuread_role_assignment" "datalake-sa-role" {
-  principal_id = azurerm_storage_account.datalake-sa.identity[0].principal_id
-  role_definition_name = "Key Vault Crypto User"
-  scope = azurerm_key_vault.key-vault.id
-}
+# resource "azuread_role_assignment" "datalake-sa-role" {
+#   principal_id = azurerm_storage_account.datalake-sa.identity[0].principal_id
+#   role_definition_name = "Key Vault Crypto User"
+#   scope = azurerm_key_vault.key-vault.id
+# }
