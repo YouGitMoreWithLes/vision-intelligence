@@ -46,9 +46,18 @@ resource "azurerm_storage_account" "datalake-sa" {
   location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
+  
   identity {
     type = "SystemAssigned"
+  }
+
+  network_rules {
+    default_action = "Deny"
+    virtual_network_subnet_ids = [azurerm_subnet.subnet0[7].id]
+  }
+
+  blob_properties {
+    versioning_enabled = true
   }
 
   # Networking and access control
