@@ -27,6 +27,10 @@ resource "azurerm_subnet" "subnet" {
 
   address_prefixes = ["${var.vnet_base_ip}.${count.index}.0/24"]
 
+  service_endpoints = var.vnet_subnets[count.index].ServiceEndpoints
+
+  private_link_service_network_policies_enabled = var.vnet_subnets[count.index].ServiceEndpoints != null ? true : false
+
   dynamic "delegation" {
     for_each = var.vnet_subnets[count.index].Delegation != null ? [var.vnet_subnets[count.index].Delegation] : []
     content {

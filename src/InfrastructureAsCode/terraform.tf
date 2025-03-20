@@ -12,6 +12,11 @@ terraform {
       source  = "hashicorp/azuread"
       version = ">= 3.1.0"
     }
+        
+    databricks = {
+        source  = "databricks/databricks"
+        version = ">=1.70.0"
+    }
 
     # github = {
     #   source  = "integrations/github"

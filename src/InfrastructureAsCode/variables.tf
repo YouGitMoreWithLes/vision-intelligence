@@ -63,6 +63,71 @@ variable "should_deploy_container_resources" {
   description = "Use this variable to stop the deployment of the container instances and app gateway so that the Vision Intelligence container can be published to the ACR. Otherwise, the deployment will fail."
 }
 
+variable "databrick_sku" {
+    type = string
+    default = "premium"
+}
+
+variable "databricks_secret_scope" {
+    type = string
+    default = "databricks_secret_scope"
+}
+
+variable "cluster1_name" {
+    type = string
+    default = "NotebookCluster"
+}
+
+variable "cluster1_spark_version" {
+    type = string
+    default = "7.3.x-scala2.12"
+}
+
+variable "cluster1_node_type_id" {
+    type = string
+    default = "Standard_DS5_v2"
+}
+
+variable "cluster1_driver_node_type_id" {
+    type = string
+    default = "Standard_DS5_v2"
+}
+
+variable "cluster1_auto_terminate" {
+    type = number
+    default = 10
+}
+
+variable "cluster1_min_workers" {
+    type = number
+    default = 0
+}
+
+variable "cluster1_max_workers" {
+    type = number
+    default = 1
+}
+
+variable "cluster1_number_of_workers" {
+    type = number
+    default = 1
+}
+
+variable "cluster1_init_script_name" {
+    type = string
+    default = "install_odbc_driver_for_sql_server.sh"
+}
+
+variable "cluster1_init_script_path" {
+    type = string
+    default = "/databricks/scripts/initscripts"
+}
+
+variable "cluster1_py_libraries" {
+    type = list(string)
+    default = ["SQLAlchemy==1.3.22", "adal==1.2.5", "sparkaid"]
+}
+
 # variable "rg_name" {
 #     type = string
 #     default = "dev-ghal-rg"
