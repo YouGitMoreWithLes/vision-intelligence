@@ -27,7 +27,7 @@ resource "azurerm_storage_account_customer_managed_key" "content-sa-cmk" {
 resource "azuread_role_assignment" "content-sa-role" {
   principal_id = azurerm_storage_account.content-sa.identity[0].principal_id
   role_definition_name = "Key Vault Crypto User"
-  scope = azurerm_key_vault_key.content-key.id
+  scope = azurerm_key_vault.key-vault.id
 }
 
 resource "azurerm_key_vault_key" "datalake-key"{
@@ -65,5 +65,5 @@ resource "azurerm_storage_account_customer_managed_key" "datalake-sa-cmk" {
 resource "azuread_role_assignment" "datalake-sa-role" {
   principal_id = azurerm_storage_account.datalake-sa.identity[0].principal_id
   role_definition_name = "Key Vault Crypto User"
-  scope = azurerm_key_vault_key.datalake-key.id
+  scope = azurerm_key_vault.key-vault.id
 }
