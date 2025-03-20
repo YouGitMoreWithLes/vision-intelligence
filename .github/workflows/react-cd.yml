@@ -43,7 +43,7 @@ jobs:
         run: |
           az storage blob delete-batch \
             --account-name ${{ env.AZURE_WEBAPP_NAME }} \
-            --source '$web' \
+            --source "$web" \
             --pattern '*' \
             --delete-snapshots include
 
@@ -51,6 +51,6 @@ jobs:
         run: |
           az storage blob upload-batch \
             --account-name ${{ env.AZURE_WEBAPP_NAME }} \
-            --destination '$web' \
+            --destination "$web" \
             --source ./downloads \
             --overwrite
