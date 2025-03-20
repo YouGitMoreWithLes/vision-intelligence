@@ -41,7 +41,7 @@ variable "vnet_subnets" {
       Name = string 
       Delegation = optional(list(object({
         Delegate = string
-        Actions  = optional(list(string), [])
+        Actions  = optional(list(string))
       })))
     }))
   default = [ # CAUTION! Altering the order of this list will afftect hardcoded values in resource files.
