@@ -53,7 +53,7 @@ resource "azurerm_storage_account" "datalake-sa" {
 
   network_rules {
     default_action = "Deny"
-    virtual_network_subnet_ids = [azurerm_subnet.subnet0[7].id]
+    virtual_network_subnet_ids = [azurerm_subnet.subnet[7].id]
   }
 
   blob_properties {
