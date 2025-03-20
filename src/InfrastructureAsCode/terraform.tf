@@ -8,10 +8,15 @@ terraform {
       version = ">=4.23.0"
     }
 
-    github = {
-      source  = "integrations/github"
-      version = ">= 6.5.0"
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 3.1.0"
     }
+
+    # github = {
+    #   source  = "integrations/github"
+    #   version = ">= 6.5.0"
+    # }
   }
 
   backend "azurerm" {
