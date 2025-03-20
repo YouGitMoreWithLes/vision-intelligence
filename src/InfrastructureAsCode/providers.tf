@@ -8,7 +8,7 @@ provider "azurerm" {
   }
 }
 
-provider "github" {
-  token = ""
-  owner = "YouGitMoreWithLes-Insight"
-}
+# provider "github" {
+#   token = ""
+#   owner = "YouGitMoreWithLes-Insight"
+# }
