@@ -45,6 +45,12 @@ resource "azurerm_storage_account" "content-sa" {
   }
 }
 
+resource "azurerm_storage_account_static_website" "web" {
+  storage_account_id = azurerm_storage_account.content-sa.id
+  index_document     = "index.html"
+  error_404_document = "404.html"
+}
+
 resource "azurerm_private_endpoint" "content-pe" {
   name                = format("%s-%s", local.base-name, "content-sa-pe")
   resource_group_name = data.azurerm_resource_group.rg.name
@@ -131,11 +137,6 @@ resource "azurerm_storage_account" "datalake-sa" {
   // Datalake Gen2 settings
   is_hns_enabled = true
   nfsv3_enabled = false
-
-  static_website {
-    index_document = "index.html"
-    error_404_document = "404.html"
-  }
 }
 
 resource "azurerm_private_endpoint" "datalake-pe" {
