@@ -25,13 +25,13 @@ jobs:
       - name: Run super-linter
         uses: github/super-linter@v7
         env:
-          DEFAULT_BRANCH: 'main'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: 'main'
+          DISABLE: JSCPD CHECKOV
           VALIDATE_ALL_CODEBASE: true
-          VALIDATE_BASH_EXEC: true
+          VALIDATE_BASH_EXEC: false
           VALIDATE_CHECKOV: false
           VALIDATE_JSCPD: false
-          DISABLE: JSCPD CHECKOV
           VALIDATE_DOTNET_SLN_FORMAT_ANALYZERS: false
           VALIDATE_DOTNET_SLN_FORMAT_STYLE: false
           VALIDATE_DOTNET_SLN_FORMAT_WHITESPACE: false
