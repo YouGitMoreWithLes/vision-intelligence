@@ -28,6 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: "main"
           DISABLE: JSCPD CHECKOV
+          PRETTIER_CONFIG_FILE: ./.prettierrc
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_BASH_EXEC: false
           VALIDATE_CHECKOV: false
