@@ -88,7 +88,7 @@ resource "null_resource" "databricks_pat" {
     triggers  =  { always_run = timestamp() }
 
     provisioner "local-exec" {
-        command = "./generate-pat-token.sh"
+        command = "chmod +x ./generate-pat-token.sh && ./generate-pat-token.sh"
 
         environment = {
             RESOURCE_GROUP = data.azurerm_resource_group.rg.name

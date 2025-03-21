@@ -24,31 +24,31 @@ test -n "$SECRET_NAME"
 # The resource name is fixed and never changes.
 echo "Getting global Databricks application token"
 token=$(az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d | jq .accessToken -r)
-echo $token
+echo "$token"
 
 # Get a token for the Azure management API
 echo "Getting Azure Management API token"
 azToken=$(az account get-access-token --resource https://management.core.windows.net/ | jq .accessToken -r)
-echo $azToken
+echo "$azToken"
 
 echo "DATABRICKS_ENDPOINT"
 echo $DATABRICKS_ENDPOINT
 echo 
 
 echo "DATABRICKS_WORKSPACE_RESOURCE_ID"
-echo $DATABRICKS_WORKSPACE_RESOURCE_ID
+echo "$DATABRICKS_WORKSPACE_RESOURCE_ID"
 echo 
 
 # Generate a PAT token. Note the quota limit of 600 tokens.
 echo "Getting PAT from Databricks"
-pat_token=$(curl -sf $DATABRICKS_ENDPOINT/api/2.0/token/create \
+pat_token=$(curl -sf "$DATABRICKS_ENDPOINT/api/2.0/token/create" \
   -H "Authorization: Bearer $token" \
   -H "X-Databricks-Azure-SP-Management-Token:$azToken" \
   -H "X-Databricks-Azure-Workspace-Resource-Id:$DATABRICKS_WORKSPACE_RESOURCE_ID" \
   -d '{ "comment": "Terraform-generated token" }' | jq .token_value -r)
 
 echo "PAT:"
-echo $pat_token
+echo "$pat_token"
 
 echo "Adding PAT to Azure Key Vault"
 az keyvault secret set --vault-name "$KEY_VAULT" -n "$SECRET_NAME" --value "$pat_token" -o none
