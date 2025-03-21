@@ -15,7 +15,7 @@ variable "project_name" {
 
 variable "env" {
   type    = string
-  default = "dev"
+  default = "dev2"
 }
 
 variable "should_create_rg" {
@@ -108,10 +108,10 @@ variable "cluster1_max_workers" {
     default = 1
 }
 
-variable "cluster1_number_of_workers" {
-    type = number
-    default = 1
-}
+# variable "cluster1_number_of_workers" {
+#     type = number
+#     default = 1
+# }
 
 variable "cluster1_init_script_name" {
     type = string

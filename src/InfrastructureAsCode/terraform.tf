@@ -18,6 +18,11 @@ terraform {
         version = ">=1.70.0"
     }
 
+    null_resource = {
+        source  = "hashicorp/null"
+        version = ">=3.2.3"
+    }
+
     # github = {
     #   source  = "integrations/github"
     #   version = ">= 6.5.0"
