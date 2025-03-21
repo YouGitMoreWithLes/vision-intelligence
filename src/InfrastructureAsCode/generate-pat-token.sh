@@ -17,8 +17,8 @@ test -n "$SECRET_NAME"
 # NOTE **********************************************************************
 # This section must be enabled if this script will be running in a release pipeline like ADO Release
 # Login
-#echo "Logging SPN into Azure CLI" 
-#az login --service-principal -u "$ARM_CLIENT_ID" -p "$ARM_CLIENT_SECRET" -t "$ARM_TENANT_ID"
+# echo "Logging SPN into Azure CLI" 
+# az login --service-principal -u "$ARM_CLIENT_ID" -p "$ARM_CLIENT_SECRET" -t "$ARM_TENANT_ID"
 
 # Get a token for the global Databricks application.
 # The resource name is fixed and never changes.

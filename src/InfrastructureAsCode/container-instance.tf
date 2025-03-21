@@ -1,4 +1,6 @@
 resource "azurerm_container_group" "vision_intelligence_cg" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   count              = var.should_deploy_container_resources == true ? 1 : 0
 
   name                = format("%s-%s", local.base-name, "cg")

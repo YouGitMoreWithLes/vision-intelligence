@@ -65,6 +65,8 @@ resource "azurerm_private_endpoint" "content-pe" {
 }
 
 resource "azurerm_key_vault_secret" "content-primary-connection-string" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "content-primary-connection-string"
   value        = azurerm_storage_account.content-sa.primary_connection_string
 
@@ -72,6 +74,8 @@ resource "azurerm_key_vault_secret" "content-primary-connection-string" {
 }
 
 resource "azurerm_key_vault_secret" "content-primary-blob-connection-string" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "content-primary-blob-connection-string"
   value        = azurerm_storage_account.content-sa.primary_blob_connection_string
 
@@ -149,6 +153,8 @@ resource "azurerm_private_endpoint" "datalake-pe" {
 }
 
 resource "azurerm_key_vault_secret" "datalake-primary-connection-string" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "datalake-primary-connection-string"
   value        = azurerm_storage_account.datalake-sa.primary_connection_string
 
@@ -156,6 +162,8 @@ resource "azurerm_key_vault_secret" "datalake-primary-connection-string" {
 }
 
 resource "azurerm_key_vault_secret" "datalake-primary-blob-connection-string" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "datalake-primary-blob-connection-string"
   value        = azurerm_storage_account.datalake-sa.primary_blob_connection_string
 
@@ -163,6 +171,8 @@ resource "azurerm_key_vault_secret" "datalake-primary-blob-connection-string" {
 }
 
 # resource "azurerm_key_vault_secret" "datalake-secret-user" {
+#  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
 #   name         = "datalake-username"
 #   value        = azurerm_container_registry.acr.admin_username
   
@@ -170,6 +180,8 @@ resource "azurerm_key_vault_secret" "datalake-primary-blob-connection-string" {
 # }
 
 # resource "azurerm_key_vault_secret" "datalake-secret-password" {
+#  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
 #   name         = "datalake-password"
 #   value        = azurerm_container_registry.acr.admin_password
   

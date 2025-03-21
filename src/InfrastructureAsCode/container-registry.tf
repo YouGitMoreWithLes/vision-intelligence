@@ -33,6 +33,8 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "azurerm_key_vault_secret" "acr-secret-server" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "acr-server"
   value        = azurerm_container_registry.acr.login_server
 
@@ -40,6 +42,8 @@ resource "azurerm_key_vault_secret" "acr-secret-server" {
 }
 
 resource "azurerm_key_vault_secret" "acr-secret-user" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "acr-username"
   value        = azurerm_container_registry.acr.admin_username
   
@@ -47,6 +51,8 @@ resource "azurerm_key_vault_secret" "acr-secret-user" {
 }
 
 resource "azurerm_key_vault_secret" "acr-secret-password" {
+  depends_on = [ azurerm_role_assignment.crnt_usr_kv_admin ]
+  
   name         = "acr-password"
   value        = azurerm_container_registry.acr.admin_password
   

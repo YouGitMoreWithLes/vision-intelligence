@@ -27,6 +27,7 @@ jobs:
         env:
           DEFAULT_BRANCH: 'main'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASH_EXEC_IGNORE_LIBRARIES: true
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_CHECKOV: false
           VALIDATE_JSCPD: false
@@ -35,5 +36,6 @@ jobs:
           VALIDATE_DOTNET_SLN_FORMAT_STYLE: false
           VALIDATE_DOTNET_SLN_FORMAT_WHITESPACE: false
           FIX_JAVASCRIPT_PRETTIER: true
-          FIX_YAML_PRETTIER: true
+          FIX_SHELL_SHFMT: true
           FIX_TERRAFORM_FMT: true
+          FIX_YAML_PRETTIER: true
