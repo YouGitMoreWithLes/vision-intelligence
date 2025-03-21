@@ -18,7 +18,7 @@ terraform {
         version = ">=1.70.0"
     }
 
-    null_resource = {
+    null = {
         source  = "hashicorp/null"
         version = ">=3.2.3"
     }
