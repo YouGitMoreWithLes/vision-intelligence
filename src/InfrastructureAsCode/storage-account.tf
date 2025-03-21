@@ -131,6 +131,11 @@ resource "azurerm_storage_account" "datalake-sa" {
   // Datalake Gen2 settings
   is_hns_enabled = true
   nfsv3_enabled = false
+
+  static_website {
+    index_document = "index.html"
+    error_404_document = "404.html"
+  }
 }
 
 resource "azurerm_private_endpoint" "datalake-pe" {

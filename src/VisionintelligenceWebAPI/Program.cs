@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddHealthChecks();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -12,6 +13,7 @@ if (app.Environment.IsDevelopment())
 app.MapOpenApi();
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 var summaries = new[]
 {
