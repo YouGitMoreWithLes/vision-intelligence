@@ -34,11 +34,11 @@ jobs:
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
-          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: false
-          environment: 'AzureCloud'
+          environment: "AzureCloud"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3

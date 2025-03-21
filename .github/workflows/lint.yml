@@ -7,7 +7,7 @@ on:
       - development
       - feature/*
       - hotfix/*
-  push: 
+  push:
     branches:
       - main
       - development
@@ -21,12 +21,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Run super-linter
         uses: github/super-linter@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BRANCH: 'main'
+          DEFAULT_BRANCH: "main"
           DISABLE: JSCPD CHECKOV
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_BASH_EXEC: false

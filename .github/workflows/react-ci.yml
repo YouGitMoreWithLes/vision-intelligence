@@ -6,19 +6,19 @@ on:
     branches:
       - main
     paths:
-      - 'src/GitHubActionsWeb/**'
+      - "src/GitHubActionsWeb/**"
   pull_request:
     branches:
       - main
     paths:
-      - 'src/GitHubActionsWeb/**'
+      - "src/GitHubActionsWeb/**"
 
 jobs:
   react-build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: 'src/GitHubActionsWeb/'
+        working-directory: "src/GitHubActionsWeb/"
 
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install

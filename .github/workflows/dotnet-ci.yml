@@ -7,15 +7,15 @@ on:
       - feature/*
       - hotfix/*
     paths:
-      - 'src/VisionintelligenceWebAPI/**'
-      - 'src/VisionIntelligenceWebApiTest/**'
-  push: 
+      - "src/VisionintelligenceWebAPI/**"
+      - "src/VisionIntelligenceWebApiTest/**"
+  push:
     branches:
       - main
       - development
     paths:
-      - 'src/VisionintelligenceWebAPI/**'
-      - 'src/VisionIntelligenceWebApiTest/**'
+      - "src/VisionintelligenceWebAPI/**"
+      - "src/VisionIntelligenceWebApiTest/**"
 
 jobs:
   build-dotnet:
@@ -25,9 +25,9 @@ jobs:
       run:
         working-directory: ./src/VisionIntelligenceWebApi
     env:
-      PROJECT_ROOT_PATH: "${{ github.workspace }}/VisionIntelligenceWebApi"
-      PROJECT_FULL_PATH: "${{ github.workspace }}/VisionIntelligenceWebApi/VisionIntelligenceWebApi.csproj"
-      TEST_FULL_PATH: "${{ github.workspace }}/VisionIntelligenceWebApiTest/VisionIntelligenceWebApiTest.csproj"
+      PROJECT_ROOT_PATH: "${{ github.workspace }}/src/VisionIntelligenceWebApi"
+      PROJECT_FULL_PATH: "${{ github.workspace }}/src/VisionIntelligenceWebApi/VisionIntelligenceWebApi.csproj"
+      TEST_FULL_PATH: "${{ github.workspace }}/src/VisionIntelligenceWebApiTest/VisionIntelligenceWebApiTest.csproj"
       DOTNET_VERSION: "8.0"
 
     steps:
@@ -39,7 +39,6 @@ jobs:
       - name: Echo project paths
         run: |
           echo "PROJECT_ROOT_PATH="${{ env.PROJECT_ROOT_PATH }}
-          echo "PROJECT_FULL_PATH="${{ env.PROJECT_FULL_PATH }}
 
       - name: Setup dotnet ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
@@ -72,5 +71,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dotnet-test-artifact
-          path: '${{ env.PROJECT_ROOT_PATH }}/TestResults'
+          path: "${{ env.PROJECT_ROOT_PATH }}/TestResults"
         if: ${{ always() }}

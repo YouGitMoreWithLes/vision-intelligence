@@ -22,17 +22,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact-name }}
-          path: './downloads'
+          path: "./downloads"
 
       - name: Azure login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
-          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: false
-          environment: 'AzureCloud'
+          environment: "AzureCloud"
 
       - name: Delete existing files in Azure Storage Account
         run: |
