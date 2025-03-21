@@ -32,7 +32,7 @@ azToken=$(az account get-access-token --resource https://management.core.windows
 echo "$azToken"
 
 echo "DATABRICKS_ENDPOINT"
-echo $DATABRICKS_ENDPOINT"
+echo "$DATABRICKS_ENDPOINT"
 echo 
 
 echo "DATABRICKS_WORKSPACE_RESOURCE_ID"
