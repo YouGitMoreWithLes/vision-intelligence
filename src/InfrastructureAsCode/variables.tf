@@ -15,7 +15,7 @@ variable "project_name" {
 
 variable "env" {
   type    = string
-  default = "dev38"
+  default = "dev39"
 }
 
 variable "should_create_rg" {
@@ -56,19 +56,6 @@ variable "vnet_subnets" {
     { Name = "storage", ServiceEndpoints = [ "Microsoft.Storage" ] },
   ]
 }
-
-variable "network_watcher_name" {
-  type    = string
-  default = "NetworkWatcher_westus2"
-  description = "Use this variable to stop the deployment of the Network Watcher in case it already exists. THere can only be 1 instance of a Network Watcher in a region, the deployment will fail trying to deploy more than 1."
-}
-
-variable "should_deploy_network_watcher" {
-  type    = bool
-  default = false
-  description = "Use this variable to stop the deployment of the container instances and app gateway so that the Vision Intelligence container can be published to the ACR. Otherwise, the deployment will fail."
-}
-
 variable "should_deploy_container_resources" {
   type    = bool
   default = false
@@ -139,6 +126,18 @@ variable "cluster1_py_libraries" {
     type = list(string)
     default = ["SQLAlchemy==1.3.22", "adal==1.2.5", "sparkaid"]
 }
+
+# variable "network_watcher_name" {
+#   type    = string
+#   default = "NetworkWatcher_westus2"
+#   description = "Use this variable to stop the deployment of the Network Watcher in case it already exists. THere can only be 1 instance of a Network Watcher in a region, the deployment will fail trying to deploy more than 1."
+# }
+
+# variable "should_deploy_network_watcher" {
+#   type    = bool
+#   default = false
+#   description = "Use this variable to stop the deployment of the container instances and app gateway so that the Vision Intelligence container can be published to the ACR. Otherwise, the deployment will fail."
+# }
 
 # variable "rg_name" {
 #     type = string

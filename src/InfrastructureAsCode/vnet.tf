@@ -63,31 +63,31 @@ resource "azurerm_monitor_diagnostic_setting" "vnet_diagnostics" {
   }
 }
 
-resource "azurerm_network_watcher" "nw" {
-  count              = var.should_deploy_network_watcher ? 1 : 0
+# resource "azurerm_network_watcher" "nw" {
+#   count              = var.should_deploy_network_watcher ? 1 : 0
 
-  name                = var.network_watcher_name
+#   name                = var.network_watcher_name
 
-  location            = data.azurerm_resource_group.rg.location
-  resource_group_name = data.azurerm_resource_group.rg.name
-}
+#   location            = data.azurerm_resource_group.rg.location
+#   resource_group_name = data.azurerm_resource_group.rg.name
+# }
 
-resource "azurerm_network_watcher_flow_log" "flow_log" {
-  name = "${azurerm_storage_account.vnet-fl.name}-flow-log"
+# resource "azurerm_network_watcher_flow_log" "flow_log" {
+#   name = "${azurerm_storage_account.vnet-fl.name}-flow-log"
 
-  resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.rg.location
+#   resource_group_name = data.azurerm_resource_group.rg.name
+#   location            = data.azurerm_resource_group.rg.location
 
-  network_watcher_name = var.network_watcher_name
+#   network_watcher_name = var.network_watcher_name
 
-  target_resource_id   = azurerm_virtual_network.vnet.id
-  storage_account_id   = azurerm_storage_account.vnet-fl.id
+#   target_resource_id   = azurerm_virtual_network.vnet.id
+#   storage_account_id   = azurerm_storage_account.vnet-fl.id
   
-  enabled              = true
+#   enabled              = true
 
-  retention_policy {
-    enabled = true
-    days    = 30
-  }
+#   retention_policy {
+#     enabled = true
+#     days    = 30
+#   }
 }
 
