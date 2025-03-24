@@ -15,7 +15,7 @@ variable "project_name" {
 
 variable "env" {
   type    = string
-  default = "dev35"
+  default = "dev36"
 }
 
 variable "should_create_rg" {
