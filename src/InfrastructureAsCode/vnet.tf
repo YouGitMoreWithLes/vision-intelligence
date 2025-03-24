@@ -89,5 +89,4 @@ resource "azurerm_monitor_diagnostic_setting" "vnet_diagnostics" {
 #     enabled = true
 #     days    = 30
 #   }
-}
-
+# }
