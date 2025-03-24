@@ -58,7 +58,7 @@ variable "vnet_subnets" {
 }
 variable "should_deploy_container_resources" {
   type    = bool
-  default = false
+  default = true
   description = "Use this variable to stop the deployment of the container instances and app gateway so that the Vision Intelligence container can be published to the ACR. Otherwise, the deployment will fail."
 }
 
