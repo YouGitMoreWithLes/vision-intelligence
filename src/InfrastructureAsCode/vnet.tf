@@ -65,7 +65,7 @@ resource "azurerm_monitor_diagnostic_setting" "vnet_diagnostics" {
 
 resource "azurerm_network_watcher" "nw" {
   count              = var.should_deploy_network_watcher ? 1 : 0
-  
+
   name                = var.network_watcher_name
 
   location            = data.azurerm_resource_group.rg.location
@@ -78,9 +78,11 @@ resource "azurerm_network_watcher_flow_log" "flow_log" {
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
 
-  network_watcher_name = azurerm_network_watcher.nw.name
+  network_watcher_name = var.network_watcher_name
+
   target_resource_id   = azurerm_virtual_network.vnet.id
   storage_account_id   = azurerm_storage_account.vnet-fl.id
+  
   enabled              = true
 
   retention_policy {
