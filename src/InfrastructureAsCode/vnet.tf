@@ -64,7 +64,10 @@ resource "azurerm_monitor_diagnostic_setting" "vnet_diagnostics" {
 }
 
 resource "azurerm_network_watcher" "nw" {
-  name                = "network-watcher-${data.azurerm_resource_group.rg.location}"
+  count              = var.should_deploy_network_watcher ? 1 : 0
+  
+  name                = var.network_watcher_name
+
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 }
