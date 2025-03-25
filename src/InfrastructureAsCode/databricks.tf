@@ -1,4 +1,6 @@
 resource "azurerm_databricks_workspace" "dbw" {
+    count               = var.should_deploy_databricks_resources ? 1 : 0
+
     name                = format("%s-%s", local.base-name, "dbw")
     resource_group_name = data.azurerm_resource_group.rg.name
     location            = data.azurerm_resource_group.rg.location
@@ -10,7 +12,9 @@ resource "azurerm_databricks_workspace" "dbw" {
 }
 
 resource "databricks_dbfs_file" "init_script" {
-    depends_on = [azurerm_databricks_workspace.dbw]
+    count               = var.should_deploy_databricks_resources ? 1 : 0
+    
+    depends_on = [azurerm_databricks_workspace.dbw[0]]
 
     //source          = pathexpand(var.cluster1_init_script_name)
     content_base64  = filebase64(pathexpand(var.cluster1_init_script_name))
@@ -26,10 +30,11 @@ resource "databricks_dbfs_file" "init_script" {
 # }
 
 resource "databricks_cluster" "cluster1" {
+    count               = var.should_deploy_databricks_resources ? 1 : 0
 
     depends_on = [
-        azurerm_databricks_workspace.dbw,
-        databricks_dbfs_file.init_script
+        azurerm_databricks_workspace.dbw[0],
+        databricks_dbfs_file.init_script[0]
     ]
 
     cluster_name            = var.cluster1_name
@@ -75,15 +80,10 @@ resource "databricks_cluster" "cluster1" {
     custom_tags = data.azurerm_resource_group.rg.tags
 }
 
-locals {
-    dbw_url = "https://${azurerm_databricks_workspace.dbw.workspace_url}"
-}
-
 resource "null_resource" "databricks_pat" {
-    depends_on = [
-        azurerm_databricks_workspace.dbw,
-        local.dbw_url
-    ]
+    count               = var.should_deploy_databricks_resources ? 1 : 0
+
+    depends_on = [ azurerm_databricks_workspace.dbw[0] ]
 
     triggers  =  { always_run = timestamp() }
 
@@ -92,10 +92,10 @@ resource "null_resource" "databricks_pat" {
 
         environment = {
             RESOURCE_GROUP = data.azurerm_resource_group.rg.name
-            DATABRICKS_WORKSPACE_RESOURCE_ID = azurerm_databricks_workspace.dbw.id
+            DATABRICKS_WORKSPACE_RESOURCE_ID = azurerm_databricks_workspace.dbw[0].id
             KEY_VAULT = azurerm_key_vault.key-vault.name
             SECRET_NAME = "sec-databricks-access-token"
-            DATABRICKS_ENDPOINT = local.dbw_url
+            DATABRICKS_ENDPOINT = "https://${azurerm_databricks_workspace.dbw[0].workspace_url}"
             # ARM_CLIENT_ID, ARM_CLIENT_SECRET, ARM_TENANT_ID are already
             # present in the environment if you are using the Terraform
             # extension for Azure DevOps or the starter from
@@ -106,10 +106,12 @@ resource "null_resource" "databricks_pat" {
 }
 
 resource "databricks_secret_scope" "kv" {
+    count               = var.should_deploy_databricks_resources ? 1 : 0
+
     depends_on = [
-        azurerm_databricks_workspace.dbw,
+        azurerm_databricks_workspace.dbw[0],
         azurerm_key_vault.key-vault,
-        null_resource.databricks_pat
+        null_resource.databricks_pat[0]
     ]
 
     name = var.databricks_secret_scope

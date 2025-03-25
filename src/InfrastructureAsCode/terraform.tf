@@ -29,10 +29,10 @@ terraform {
     # }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "tf-state-rg"
-    storage_account_name = "ghatfstatesa"
-    container_name       = "insight-vi-tfstate"
-    key                  = "dev.tfstate"
-  }
+  # backend "azurerm" {
+  #   resource_group_name  = "tf-state-rg"
+  #   storage_account_name = "ghatfstatesa"
+  #   container_name       = "insight-vi-tfstate"
+  #   key                  = "dev.tfstate"
+  # }
 }

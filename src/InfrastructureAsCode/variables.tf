@@ -15,7 +15,8 @@ variable "project_name" {
 
 variable "env" {
   type    = string
-  default = "dev39"
+  # default = "dev39"
+  default = "dev96"
 }
 
 variable "should_create_rg" {
@@ -47,19 +48,44 @@ variable "vnet_subnets" {
     }))
   default = [ # CAUTION! Altering the order of this list will afftect hardcoded values in resource files.
     { Name = "app-gateway" },
-    { Name = "app-service", Delegation = [{ Delegate = "Microsoft.ContainerInstance/containerGroups", Actions = ["Microsoft.Network/virtualNetworks/subnets/action"] }] },
-    { Name = "container-instance" },
+    { Name = "container-instance", Delegation = [ { Delegate = "Microsoft.ContainerInstance/containerGroups", Actions = ["Microsoft.Network/virtualNetworks/subnets/action"] } ] },
+    { Name = "app-service", Delegation = [ { Delegate = "Microsoft.Web/serverFarms" } ]  },
     { Name = "database" },
     { Name = "data-warehouse" },
-    { Name = "event-hub" },
+    { Name = "event-hub", ServiceEndpoints = [ "Microsoft.EventHub" ] },
     { Name = "nat-gateway" },
     { Name = "storage", ServiceEndpoints = [ "Microsoft.Storage" ] },
   ]
 }
 variable "should_deploy_container_resources" {
   type    = bool
-  default = true
+  default = false
   description = "Use this variable to stop the deployment of the container instances and app gateway so that the Vision Intelligence container can be published to the ACR. Otherwise, the deployment will fail."
+}
+
+variable "should_deploy_databricks_resources" {
+  type    = bool
+  default = false
+  description = "Use this variable to stop the deployment of the Databricks resources."
+}
+
+variable "should_deploy_datafactory_resources" {
+  type    = bool
+  default = false
+  description = "Use this variable to stop the deployment of the Data Factory resources."
+  
+}
+
+variable "should_deploy_salesforce_resources" {
+  type    = bool
+  default = true
+  description = "Use this variable to stop the deployment of the Salesforce resources."
+}
+
+variable "should_deploy_servicenow_resources" {
+  type    = bool
+  default = true
+  description = "Use this variable to stop the deployment of the ServiceNow resources."
 }
 
 variable "databrick_sku" {

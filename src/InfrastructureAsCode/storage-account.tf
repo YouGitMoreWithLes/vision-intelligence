@@ -1,15 +1,3 @@
-resource "azurerm_private_dns_zone" "privatelink_blob" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = data.azurerm_resource_group.rg.name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_vnet_link" {
-  name                  = "privatelink-blob-vnet-link"
-  resource_group_name   = data.azurerm_resource_group.rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_blob.name
-  virtual_network_id    = azurerm_virtual_network.vnet.id
-}
-
 ## NOTE: Cusomter managed keys are commented out for now. Both Purge Protection and Soft Delete are required to be enabled on the Key Vault for the customer managed keys to work.
 
 # resource "azurerm_key_vault_key" "content-key"{
